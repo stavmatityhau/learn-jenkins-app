@@ -1,8 +1,7 @@
 pipeline {
     agent any
-
+/*
     stages {
-        /*
         stage('Build') {
             agent{
                 docker {
@@ -20,10 +19,10 @@ pipeline {
                     ls -la
                 '''
             }
-        }
-        */
-         
+        }  
     }
+    */
+    
     stage('E2E'){
             agent{
                 docker {
@@ -38,7 +37,7 @@ pipeline {
                     npx playwright test 
                 '''
             }
-        }
+    }
 
     post{
         always{
