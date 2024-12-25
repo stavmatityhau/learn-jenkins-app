@@ -48,7 +48,9 @@ pipeline {
                     }
                     steps {
                         sh '''
-                            npm install
+                            npm install serve
+                            npx serve -s build &
+                            sleep 5
                             npx playwright test --reporter=html
                         '''
                     }
