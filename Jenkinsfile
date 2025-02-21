@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { node { label 'built-in' } }
 
     environment{
         NETLIFY_SITE_ID = '6ebddb7e-089d-4369-8c93-009010169d86'
@@ -9,25 +9,16 @@ pipeline {
 
     stages {
         stage('AWS'){
-            agent{
-                docker{
-                    image 'amazon/aws-cli'
-                    args "--entrypoint=''"
-                }
-            }
+            agent { node { label 'built-in' } }
             steps{
                 sh '''
                     aws --version
                 '''
             }
         }
+
         stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
+            agent { node { label 'built-in' } }
             steps {
                 sh '''
                     echo "Small change"
@@ -44,12 +35,7 @@ pipeline {
         stage('Run Test'){
             parallel {
                 stage('Unit Test') {
-                    agent {
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true
-                        }
-                    }
+                    agent { node { label 'built-in' } }
                     steps {
                         sh '''
                             npm install
@@ -63,12 +49,7 @@ pipeline {
                     }
                 }
                 stage('E2E Test') {
-                    agent {
-                        docker {
-                            image 'my-jenkins'
-                            reuseNode true
-                        }
-                    }
+                    agent { node { label 'built-in' } }
                     steps {
                         sh '''
                             serve -s build &
@@ -86,12 +67,7 @@ pipeline {
         }
 
         stage('Deploy staging') {
-            agent {
-                docker {
-                    image 'my-jenkins'
-                    reuseNode true
-                }
-            }
+            agent { node { label 'built-in' } }
             environment{
                 CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
             }
@@ -113,12 +89,7 @@ pipeline {
         }
         
         stage('Deploy prod') {
-            agent {
-                docker {
-                    image 'my-jenkins'
-                    reuseNode true
-                }
-            }
+            agent { node { label 'built-in' } }
             environment{
                 CI_ENVIRONMENT_URL = 'https://magenta-conkies-a9ebf2.netlify.app'
             }
