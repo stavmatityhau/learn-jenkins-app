@@ -8,13 +8,9 @@ pipeline {
     }
 
     stages {
-        stage('AWS') {
-            agent {
-                docker {
-                    image 'amazon/aws-cli'
-                }
-            }
-            steps {
+        stage('AWS'){
+            agent { node { label 'built-in' } }
+            steps{
                 sh '''
                     aws --version
                 '''
