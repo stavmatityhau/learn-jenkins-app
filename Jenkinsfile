@@ -4,13 +4,18 @@ pipeline {
     environment{
         NETLIFY_SITE_ID = '6ebddb7e-089d-4369-8c93-009010169d86'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-        REACT_APP_VERSION = "1.2.$BUILD_ID"
+        REACT_APP_VERSION = "1.2.${BUILD_ID}"
     }
 
     stages {
-        stage('AWS'){
-            agent { node { label 'built-in' } }
-            steps{
+        stage('AWS') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                }
+            }
+            steps {
                 sh '''
                     aws --version
                 '''
