@@ -8,16 +8,6 @@ pipeline {
     }
 
     stages {
-        
-        stage('Check Docker') {
-    agent { node { label 'built-in' } }
-    steps {
-        sh '''
-            docker ps
-            docker info
-        '''
-    }
-}
         stage('AWS') {
             agent {
                 docker {
