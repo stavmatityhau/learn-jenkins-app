@@ -15,18 +15,13 @@ pipeline {
                 }
             }
         }
-        stage('AWS'){
-            agent { 
-                docker{ 
-                    image 'amazon/aws-cli'
-                    args "--entrypoint=''" 
-                    } 
+        stage('AWS') {
+            steps {
+                script {
+                    docker.image('amazon/aws-cli').inside {
+                        sh 'aws --version'  
+                    }
                 }
-            steps{
-                sh '''
-                    aws --version
-                    aws s3 ls
-                '''
             }
         }
 
