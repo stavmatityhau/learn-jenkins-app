@@ -2,27 +2,18 @@ pipeline {
     agent { node { label 'built-in' } }
 
     environment{
-        PATH = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin"
         NETLIFY_SITE_ID = '6ebddb7e-089d-4369-8c93-009010169d86'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         REACT_APP_VERSION = "1.2.${BUILD_ID}"
     }
 
     stages {
-        stage('Docker Check') {
-            steps {
-                withEnv(["PATH+DOCKER=/usr/local/bin"]){
-                sh 'docker --version'
-                }
-            }
-        }
-        stage('AWS') {
-            steps {
-                script {
-                    docker.image('amazon/aws-cli').inside {
-                        sh 'aws --version'  
-                    }
-                }
+        stage('AWS'){
+            agent { node { label 'built-in' } }
+            steps{
+                sh '''
+                    aws --version
+                '''
             }
         }
 
