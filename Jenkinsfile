@@ -10,7 +10,9 @@ pipeline {
     stages {
         stage('Docker Check') {
             steps {
+                withEnv(["PATH+DOCKER=/usr/local/bin"]){
                 sh 'docker --version'
+                }
             }
         }
         stage('AWS'){
