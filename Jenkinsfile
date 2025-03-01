@@ -1,5 +1,5 @@
 pipeline {
-    agent { node { label 'built-in' } }
+    agent any
 
     environment{
         NETLIFY_SITE_ID = '6ebddb7e-089d-4369-8c93-009010169d86'
@@ -8,14 +8,20 @@ pipeline {
     }
 
     stages {
-        stage('AWS'){
-            agent { node { label 'built-in' } }
-            steps{
+         stage('AWS') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                }
+            }
+            steps {
                 sh '''
                     aws --version
                 '''
             }
         }
+
 
         stage('Build') {
             agent { node { label 'built-in' } }
