@@ -2,7 +2,7 @@ pipeline {
     agent { node { label 'built-in' } }
 
     environment{
-        PATH = "/opt/homebrew/bin:$PATH"
+        PATH = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin"
         NETLIFY_SITE_ID = '6ebddb7e-089d-4369-8c93-009010169d86'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         REACT_APP_VERSION = "1.2.${BUILD_ID}"
